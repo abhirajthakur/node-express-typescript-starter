@@ -6,7 +6,7 @@ type SuccessPayload<T> = {
   message?: string;
 };
 
-export function sendSuccess<T>(res: Response, data: T, statusCode = 200, message?: string) {
+export function sendSuccess<T>(res: Response, statusCode = 200, data: T, message?: string) {
   const payload: SuccessPayload<T> = {
     success: true,
     data,

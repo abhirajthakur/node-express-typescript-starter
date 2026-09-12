@@ -1,0 +1,1 @@
+ALTER TABLE "hotels" ALTER COLUMN "ratings" SET DEFAULT '0.0';

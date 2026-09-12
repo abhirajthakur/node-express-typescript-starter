@@ -1,4 +1,5 @@
 import env from "../config/env.js";
+import { logger } from "../lib/logger.js";
 import { ApiError } from "../utils/api-error.js";
 
 import type { NextFunction, Request, Response } from "express";
@@ -18,7 +19,11 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
     return;
   }
 
-  console.error("[error]", err);
+  logger.error("Unhandled error", {
+    message: err.message,
+    stack: err.stack,
+    error: err,
+  });
 
   const body: Record<string, unknown> = {
     success: false,

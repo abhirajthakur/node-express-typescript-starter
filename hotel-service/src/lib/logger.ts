@@ -21,7 +21,14 @@ const developmentFormat = winston.format.combine(
   }),
   winston.format.printf((info) => {
     const correlationId = info.correlationId ? ` [${info.correlationId}]` : "";
-    return `${info.timestamp} ${info.level}${correlationId}: ${info.message}`;
+    const metadata = Object.entries(info)
+      .filter(([key]) => !["timestamp", "level", "message", "correlationId"].includes(key))
+      .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+      .join(" ");
+
+    return `${info.timestamp} ${info.level}${correlationId}: ${info.message}${
+      metadata ? ` ${metadata}` : ""
+    }`;
   }),
 );
 
@@ -35,7 +42,6 @@ const productionFormat = winston.format.combine(
 export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || "info",
   format: isDevelopment ? developmentFormat : productionFormat,
-  defaultMeta: { service: "hotel-service" },
   transports: [
     new winston.transports.Console(),
     ...(isDevelopment
