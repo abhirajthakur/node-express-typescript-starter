@@ -15,7 +15,7 @@ app.use(correlationId);
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 app.use("/api/v1", v1Router);
 
-app.use(errorHandler);
 app.use(routeNotFound);
+app.use(errorHandler);
 
 export default app;
